@@ -7,8 +7,10 @@
 <body>
 <canvas id="draw" width="800" height="800"></canvas>
 <script>
+// declaring the div for the canvas
 const canvas = document.querySelector('#draw');
 const ctx = canvas.getContext('2d');
+// setting canvas to size of window
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 ctx.strokeStyle = '#BADA55';
@@ -26,6 +28,7 @@ let direction = true;
 function draw(e) {
   if (!isDrawing) return; // stop the fn from running when they are not moused down
   console.log(e);
+  // hsl begins at red
   ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
   ctx.beginPath();
   // start from
@@ -33,12 +36,15 @@ function draw(e) {
   // go to
   ctx.lineTo(e.offsetX, e.offsetY);
   ctx.stroke();
+  // updating variables of x and y to be from where the person left off 
   [lastX, lastY] = [e.offsetX, e.offsetY];
-
+//increment the hue hsl
   hue++;
   if (hue >= 360) {
+    // starts back to red
     hue = 0;
   }
+  //changing out the line width once it reaches it's max, starts small
   if (ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
     direction = !direction;
   }
@@ -50,14 +56,16 @@ function draw(e) {
   }
 
 }
-
+// listening for the click to draw on canvas
 canvas.addEventListener('mousedown', (e) => {
   isDrawing = true;
+  //update the variables from where the person left off
   [lastX, lastY] = [e.offsetX, e.offsetY];
 });
 
-
+// continue drawing on move
 canvas.addEventListener('mousemove', draw);
+//end drawing on release
 canvas.addEventListener('mouseup', () => isDrawing = false);
 canvas.addEventListener('mouseout', () => isDrawing = false);
 
